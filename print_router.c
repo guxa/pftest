@@ -6,11 +6,49 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/11 17:23:09 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/11 17:58:02 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
+
+size_t		print_padding(char p, size_t len, int fd)
+{
+	size_t i;
+
+	i = 0;
+	while (i++ < len)
+		ft_putchar_fd(p, fd);
+	return (len);
+}
+
+// void	number_handler(t_elem *elem)
+// {
+
+// }
+
+
+int		string_printer(t_elem *elem, int fd)
+{
+	size_t	string_len;
+	int		count;
+	size_t	to_print;
+
+	if (elem->data == NULL && elem->precision == -1)
+		return (ft_putstr_part("(null)", 6, fd));
+	string_len = ft_strlen((const char*)elem->data);
+	count = 0;
+	to_print = string_len;
+	if (elem->precision != -1 && elem->precision < (int)string_len)
+		to_print = elem->precision;
+	if (to_print < elem->width && !ft_strchr(elem->flags, '-'))
+		count += print_padding(' ', elem->width - to_print, fd); /// ovde praznovo mesto mojt da ne e fiksno da zavisit od dali imat 0 vo flags
+	count += ft_putstr_part((const char*)elem->data, to_print, fd);
+	if (to_print < elem->width && ft_strchr(elem->flags, '-') != NULL)
+		count += print_padding(' ', elem->width - to_print, fd);
+
+	return (count);	
+}
 
 int		letter_printer(t_elem *elem, int fd)
 {
@@ -28,7 +66,7 @@ int		letter_printer(t_elem *elem, int fd)
 	return (count);
 }
 
-void	print_routes(t_elem *list, int fd)
+size_t	print_routes(t_elem *list, int fd)
 {
 	int	printed_char;
 
@@ -43,60 +81,5 @@ void	print_routes(t_elem *list, int fd)
 		
 		list = list->next;
 	}
-}
-
-// void	number_handler(t_elem *elem)
-// {
-
-// }
-
-int		string_printer(t_elem *elem, int fd)
-{
-	size_t	string_len;
-	int		i;
-	char	*temp;
-	char	*padding;
-
-	string_len = ft_strlen((const char*)elem->data); // keep this
-	// i = 0;
-	// if (elem->width && string_len < elem->width)
-	// {
-	// 	temp = (char*)elem->data;
-	// 	padding = ft_strnew(string_len - elem->width);
-	// 	while (string_len++ != elem->width)
-	// 		padding[i++] = ' ';
-	// 	if (ft_strchr(elem->flags, '-'))
-	// 		elem->data = ft_strjoin(temp, padding);
-	// 	else
-	// 		elem->data = ft_strjoin(padding, temp);
-	// 	ft_memdel((void**)temp);
-	// }
-
-
-	int count;
-	int	to_print;
-
-	count = 0;
-	to_print = string_len;
-	if (elem->data == NULL && elem->precision == -1)
-		return (ft_putstr_part("(null)", 6, fd));
-	if (elem->precision != -1 && elem->precision < (int)string_len)
-		to_print = elem->precision;
-	if (to_print < elem->width && !ft_strchr(elem->flags, '-'))
-		count += print_padding(' ', elem->width - to_print, fd); /// ovde praznovo mesto mojt da ne e fiksno da zavisit od dali imat 0 vo flags
-	count += ft_putstr_part((const char*)elem->data, to_print, fd);
-	if (to_print < elem->width && ft_strchr(elem->flags, '-') != NULL)
-		count += print_padding(' ', elem->width - to_print, fd);
-
-	return (count);	
-}
-
-int		print_padding(char p, size_t len, int fd)
-{
-	size_t i;
-
-	i = 0;
-	while (i++ < len)
-		ft_putchar_fd(p, fd);
-	return ((int)i);
+	return (printed_char);
 }
