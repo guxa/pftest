@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 18:00:37 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/12 20:23:14 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,34 @@ void	transform_int(t_elem *elem)
 
 
 
-// void	add_padding(t_elem *elem, int justify, char pad)
-// {
-// 	char	pad;
-// 	int		justify;
+void	add_padding(t_elem *elem)
+{
+	char	pad;
+	int		justify;
+	int		diff;
+	char	*padding;
+	char	*temp;
 
-// 	pad = ' ';
-// 	justify = 0;
-// 	if (ft_strchr(elem->flags, '-'))
-// 		justify = 1;
-// 	if (ft_strchr(elem->flags, '0'))
-// 		pad = '0';
-// }
+	pad = ' ';
+	justify = 0;
+	diff = (int)elem->width - (int)ft_strlen((char*)elem->data);
+	if (diff < 1)
+		return ;
+	if (ft_strchr(elem->flags, '-'))
+		justify = 1;
+	if (ft_strchr(elem->flags, '0') && justify == 0 && elem->precision == -1)
+		pad = '0';
+	padding = ft_strnew(diff);
+	while (--diff >= 0)
+		padding[diff] = pad;
+	if (justify)
+		temp = ft_strjoin(elem->data, padding);
+	else
+		temp = ft_strjoin(padding, elem->data);
+	free(padding);
+	ft_memdel(&(elem->data));
+	elem->data = temp;
+}
 
 void	handle_prec(t_elem *elem, int digits)
 {
@@ -57,8 +73,6 @@ void	handle_prec(t_elem *elem, int digits)
 	int		sign;
 
 	sign = 0;
-	// if (ft_strchr(elem->flags, '+') || ft_strchr(elem->flags, ' '))
-	// 	sign++;
 	if (ft_isdigit(((char*)(elem->data))[0]) == 0)
 		sign++;
 	diff = elem->precision - (digits - sign);
@@ -68,13 +82,6 @@ void	handle_prec(t_elem *elem, int digits)
 		temp[diff + sign] = '0';
 	if (sign)
 		temp[0] = '-';
-	// if (sign)
-	// {
-	// 	if (((char *)(elem->data))[0] != '-' && ft_strchr(elem->flags, '+'))
-	// 		temp[0] = '+';
-	// 	else if (((char *)(elem->data))[0] != '-' && ft_strchr(elem->flags, ' '))
-	// 		temp[0] = ' ';
-	// }
 	ft_memdel(&(elem->data));
 	elem->data = (void*)temp;
 }
@@ -88,12 +95,12 @@ void	num_flags_handler(t_elem *elem)
 	length = ft_strlen((const char*)elem->data);
 	if (elem->precision > -1 && elem->precision > length)
 		handle_prec(elem, length);
-	if (ft_strchr(elem->flags, '+'))
+	if (ft_strchr(elem->flags, '+') && is_signed_conv(elem->argtype))
 	{
 		if (ft_strchr((char *)(elem->data), '-') == NULL)
 			temp = ft_strjoin("+", (const char *)elem->data);
 	}
-	else if (ft_strchr(elem->flags, ' '))
+	else if (ft_strchr(elem->flags, ' ') && is_signed_conv(elem->argtype))
 		if (ft_strchr((char *)(elem->data), '-') == NULL)
 			temp = ft_strjoin(" ", (const char*)elem->data);
 	if (temp)
@@ -101,7 +108,7 @@ void	num_flags_handler(t_elem *elem)
 		ft_memdel(&(elem->data));
 		elem->data = (void*)temp;
 	}
-	//add_padding(elem);
+	add_padding(elem);
 }
 
 void	number_handler(t_elem *elem)
