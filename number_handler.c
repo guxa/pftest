@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 20:46:29 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/12 23:01:57 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ void	transform_int(t_elem *elem)
 {
 	intmax_t	number;
 
-	number = (intmax_t)elem->data;
-
-	if (elem->length[0] == '\0')
+	number = (intmax_t)elem->data; 
+	if (number == 0) // bez ova bea ok, ako imat nekoj gresni komentiraj
+		elem->data = ft_strdup("0");
+	else if (elem->length[0] == '\0' && elem->argtype != 'D')
 		elem->data = ft_itoa((int)number);
 	else if (elem->length[0] == 'h' && elem->length[1] == 'h')
 		elem->data = ft_itoa((char)number);
@@ -27,7 +28,7 @@ void	transform_int(t_elem *elem)
 		elem->data = ft_itoa((short)number);
 	else if (elem->length[0] == 'l' && elem->length[1] == 'l')
 		elem->data = ft_itoa((long long)number);
-	else if (elem->length[0] == 'l')
+	else if (elem->length[0] == 'l' || elem->argtype == 'D')
 		elem->data = ft_itoa((long)number);
 	else if (elem->length[0] == 'z')
 		elem->data = ft_itoa((size_t)number);
@@ -46,13 +47,13 @@ void	add_padding(t_elem *elem, int sign)
 	char	*temp;
 
 	pad = ' ';
-	justify = 0;
+	justify = (ft_strchr(elem->flags, '-') == NULL ? 0 : 1);
 	if ((diff = (int)elem->width - (int)ft_strlen((char*)elem->data)) < 1)
 		return ;
-	if (ft_strchr(elem->flags, '-'))
-		justify = 1;
-	if (ft_strchr(elem->flags, '0') && justify == 0 && elem->precision == -1)
+	if (ft_strchr(elem->flags, '0') && justify == 0 && elem->precision == -1) // za precis ovde ne sum sig
 		pad = '0';
+	if (ft_strchr(elem->flags, '-') || pad == ' ')
+		sign = 0;
 	padding = ft_strnew(diff + sign);
 	while (--diff >= 0)
 		padding[diff + sign] = pad;
@@ -93,9 +94,9 @@ void	num_flags_handler(t_elem *elem)
 	int		sign;
 
 	temp = NULL;
-	sign = (((char*)(elem->data))[0] == '-' ? 1 : 0);
+	sign = (((char*)(elem->data))[0] == '-' ? 1 : 0); // nemat mesto vo width ama evo i ovde najde primena
 	length = ft_strlen((const char*)elem->data);
-	if (elem->precision > -1 && elem->precision > length)
+	if (elem->precision > -1 && elem->precision > length - sign)
 		handle_prec(elem, length);
 	if (ft_strchr(elem->flags, '+') && is_signed_conv(elem->argtype))
 	{
@@ -117,7 +118,10 @@ void	number_handler(t_elem *elem)
 {
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
-
+	// else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
+	// 		|| elem->argtype == 'o' || elem->argtype == 'O' || elem->argtype == 'u'
+	// 		|| elem->argtype == 'U')
+	// 	transform_unsigned();
 	num_flags_handler(elem);
 }
 
