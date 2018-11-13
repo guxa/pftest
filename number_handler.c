@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 23:01:57 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/13 01:13:15 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	transform_int(t_elem *elem)
 
 	number = (intmax_t)elem->data; 
 	if (number == 0) // bez ova bea ok, ako imat nekoj gresni komentiraj
-		elem->data = ft_strdup("0");
+		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
 	else if (elem->length[0] == '\0' && elem->argtype != 'D')
 		elem->data = ft_itoa((int)number);
 	else if (elem->length[0] == 'h' && elem->length[1] == 'h')
@@ -57,7 +57,7 @@ void	add_padding(t_elem *elem, int sign)
 	padding = ft_strnew(diff + sign);
 	while (--diff >= 0)
 		padding[diff + sign] = pad;
-	padding[0] = (sign == 1 ? '-' : pad);
+	padding[0] = (sign == 1 ? ((char*)elem->data)[0] : pad);
 	if (justify)
 		temp = ft_strjoin(elem->data, padding);
 	else
@@ -98,14 +98,16 @@ void	num_flags_handler(t_elem *elem)
 	length = ft_strlen((const char*)elem->data);
 	if (elem->precision > -1 && elem->precision > length - sign)
 		handle_prec(elem, length);
-	if (ft_strchr(elem->flags, '+') && is_signed_conv(elem->argtype))
+	if (ft_strchr(elem->flags, '+') && is_signed(elem->argtype)	&& !sign)
 	{
-		if (ft_strchr((char *)(elem->data), '-') == NULL)
-			temp = ft_strjoin("+", (const char *)elem->data);
+		temp = ft_strjoin("+", (const char *)elem->data);
+		sign = 1;
 	}
-	else if (ft_strchr(elem->flags, ' ') && is_signed_conv(elem->argtype))
-		if (ft_strchr((char *)(elem->data), '-') == NULL)
-			temp = ft_strjoin(" ", (const char*)elem->data);
+	else if (ft_strchr(elem->flags, ' ') && is_signed(elem->argtype) && !sign)
+	{
+		temp = ft_strjoin(" ", (const char*)elem->data);
+		sign = 1;
+	}
 	if (temp)
 	{
 		ft_memdel(&(elem->data));
@@ -116,6 +118,11 @@ void	num_flags_handler(t_elem *elem)
 
 void	number_handler(t_elem *elem)
 {
+	if (elem->argtype >= 'A' && elem->argtype < 'X')
+		{
+			elem->length[0] = '\0';
+			elem->length[1] = '\0';
+		}
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
 	// else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
