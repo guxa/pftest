@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:22:26 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/11 23:46:08 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/12 19:52:59 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ int process_width_prec(const char *format, int start, t_elem *new_elem, va_list 
 	}
 	if (format[start] == '.')
 	{
+		num++;
 		if (ft_isdigit(format[++start]) == 0)
 			new_elem->precision = 0;
 		else
-			new_elem->precision = ft_atoi(&format[start]); // mozda ke ni trebit uslov za ako e - precision da go smenime vo 0
-		num = 1 + countdigits(new_elem->precision, 10); // ovde 1 + za tockata
+		{
+			new_elem->precision = ft_atoi(&format[start]);  // mozda ke ni trebit uslov za ako e - precision da go smenime vo 0
+			num += countdigits(new_elem->precision, 10);
+		}
 	}
-
 	return (num);
 }
 
@@ -83,7 +85,7 @@ int	format_data(t_elem **list, const char *format, va_list ap, int pos)
 		pos += process_width_prec(format, pos, new, ap);
 	if (format[pos] && is_length(format[pos]))
 		pos += get_length(format, pos, new);
-	if (format[pos] && is_printvar(format[pos] == 0)) // ova mozda error trebit da frlit?
+	if (format[pos] && (is_printvar(format[pos]) == 0)) // ova mozda error trebit da frlit?
 		exit_app("Invalid specifier\n usage: ft_printf %%[flags][width][.precision][length]specifier");
 	if (format[pos])
 	{

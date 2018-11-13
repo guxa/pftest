@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 20:23:14 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/12 20:46:29 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	transform_int(t_elem *elem)
 
 
 
-void	add_padding(t_elem *elem)
+void	add_padding(t_elem *elem, int sign)
 {
 	char	pad;
 	int		justify;
@@ -47,20 +47,20 @@ void	add_padding(t_elem *elem)
 
 	pad = ' ';
 	justify = 0;
-	diff = (int)elem->width - (int)ft_strlen((char*)elem->data);
-	if (diff < 1)
+	if ((diff = (int)elem->width - (int)ft_strlen((char*)elem->data)) < 1)
 		return ;
 	if (ft_strchr(elem->flags, '-'))
 		justify = 1;
 	if (ft_strchr(elem->flags, '0') && justify == 0 && elem->precision == -1)
 		pad = '0';
-	padding = ft_strnew(diff);
+	padding = ft_strnew(diff + sign);
 	while (--diff >= 0)
-		padding[diff] = pad;
+		padding[diff + sign] = pad;
+	padding[0] = (sign == 1 ? '-' : pad);
 	if (justify)
 		temp = ft_strjoin(elem->data, padding);
 	else
-		temp = ft_strjoin(padding, elem->data);
+		temp = ft_strjoin(padding, elem->data + sign);
 	free(padding);
 	ft_memdel(&(elem->data));
 	elem->data = temp;
@@ -90,8 +90,10 @@ void	num_flags_handler(t_elem *elem)
 {
 	int		length;
 	char	*temp;
+	int		sign;
 
 	temp = NULL;
+	sign = (((char*)(elem->data))[0] == '-' ? 1 : 0);
 	length = ft_strlen((const char*)elem->data);
 	if (elem->precision > -1 && elem->precision > length)
 		handle_prec(elem, length);
@@ -108,7 +110,7 @@ void	num_flags_handler(t_elem *elem)
 		ft_memdel(&(elem->data));
 		elem->data = (void*)temp;
 	}
-	add_padding(elem);
+	add_padding(elem, sign);
 }
 
 void	number_handler(t_elem *elem)
