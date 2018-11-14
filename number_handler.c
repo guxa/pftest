@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 20:50:19 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/13 22:16:50 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	add_padding(t_elem *elem, int sign)
 		return ;
 	if (ft_strchr(elem->flags, '0') && justify == 0 && elem->precision == -1) // za precis ovde ne sum sig
 		pad = '0';
-	if (ft_strchr(elem->flags, '-') || pad == ' ')
+	if (pad == ' ')
 		sign = 0;
 	padding = ft_strnew(diff + sign);
 	while (--diff >= 0)
@@ -95,15 +95,15 @@ void	add_padding(t_elem *elem, int sign)
 	elem->data = temp;
 }
 
-void	handle_prec(t_elem *elem, int digits)
+void	handle_prec(t_elem *elem, int digits, int sign)
 {
 	int		diff;
 	char	*temp;
-	int		sign;
+	// int		sign;
 
-	sign = 0;
-	if (ft_isdigit(((char*)(elem->data))[0]) == 0)
-		sign++;
+	// sign = 0;
+	// if (ft_isdigit(((char*)(elem->data))[0]) == 0)
+	// 	sign++;
 	diff = elem->precision - (digits - sign);
 	temp = ft_strnew(elem->precision + sign);  // + sign za ako imat + ili ' '
 	ft_strcpy(&temp[diff], (const char*)elem->data); // + sign za da ne go kopirame minusot ako imat
@@ -125,8 +125,7 @@ void	num_flags_handler(t_elem *elem)
 	sign = (((char*)(elem->data))[0] == '-' ? 1 : 0); // nemat mesto vo width ama evo i ovde najde primena
 	length = ft_strlen((const char*)elem->data);
 	if (elem->precision > -1 && elem->precision > length - sign)
-		handle_prec(elem, length);
-	add_hash(elem);
+		handle_prec(elem, length, sign);
 	if (ft_strchr(elem->flags, '+') && is_signed(elem->argtype)	&& !sign)
 	{
 		temp = ft_strjoin("+", (const char *)elem->data);
@@ -143,6 +142,7 @@ void	num_flags_handler(t_elem *elem)
 		elem->data = (void*)temp;
 	}
 	add_padding(elem, sign);
+	add_hash(elem);
 }
 
 void	number_handler(t_elem *elem)
@@ -152,6 +152,8 @@ void	number_handler(t_elem *elem)
 		elem->length[0] = '\0';
 		elem->length[1] = '\0';
 	}
+	if (elem->data == 0 && ft_strchr(elem->flags, '#')) //&&getbase(elem->argtype) != 10
+		(ft_strchr(elem->flags, '#'))[0] = '/';
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
 	else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
@@ -168,18 +170,24 @@ void	add_hash(t_elem *elem)
 	int		hash;
 	char	*temp;
 	char	*result;
+	int		spaces;
 
+	spaces = 0;
 	hash = 0;
 	temp = NULL;
 	if (ft_strchr(elem->flags, '#') && getbase(elem->argtype) != 10)
-		hash = (((char *)elem->data)[0] == '0' ? 0 : 1);
+		hash = 1;
+	//	hash = (((char *)elem->data)[0] == '0' ? 0 : 1);
 	if (hash)
 	{
+		while (((char*)elem->data)[spaces] == ' ')
+			spaces++;
 		if (elem->argtype == 'X' || elem->argtype == 'x')
 			hash++;
-		temp = ft_strnew(hash);
+		temp = ft_strnew(hash + spaces);
+		ft_strncpy(temp, (const char*)elem->data, spaces);
 		ft_strncpy(temp, "0x", hash);
-		result = ft_strjoin(temp, elem->data);
+		result = ft_strjoin(temp, &(elem->data[spaces]));
 		temp = elem->data;
 		elem->data = result;
 		ft_memdel((void **)&temp);
