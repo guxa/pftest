@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 22:16:50 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 15:24:11 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,14 @@ void	transform_unsigned(t_elem *elem)
 	//  	ft_strmap(elem->data, ft_toupper);
 }
 
+// static char	*pointer(t_plist *list)
+// {
+// 	list->flag[0] = '#';
+// 	list->flag[1] = '\0';
+// 	return (ft_max_itoabase(16, (unsigned long)list->arg, 0));
+// }
 
-void	add_padding(t_elem *elem, int sign)
+void	add_padding(t_elem *elem, int sign, int hash)
 {
 	char	pad;
 	int		justify;
@@ -89,7 +95,7 @@ void	add_padding(t_elem *elem, int sign)
 	if (justify)
 		temp = ft_strjoin(elem->data, padding);
 	else
-		temp = ft_strjoin(padding, elem->data + sign);
+		temp = insert_string(padding, elem->data + sign, hash, pad);//ft_strjoin(padding, elem->data + sign);
 	free(padding);
 	ft_memdel(&(elem->data));
 	elem->data = temp;
@@ -141,9 +147,14 @@ void	num_flags_handler(t_elem *elem)
 		ft_memdel(&(elem->data));
 		elem->data = (void*)temp;
 	}
-	add_padding(elem, sign);
-	add_hash(elem);
+	add_padding(elem, sign, add_hash(elem));
 }
+
+/*
+** ->ovde proverka za == 0 i '#' flag, za da se trgnit, zosto add_hash se povikvit
+** posle dodavanje precision, i togas ne se znajt dali brojot bil 0, ili od prec se nulite.
+** ->proverkava za < 'X', zoso za drugite golemi bukvi U O D undefined beh e length
+*/
 
 void	number_handler(t_elem *elem)
 {
@@ -152,27 +163,25 @@ void	number_handler(t_elem *elem)
 		elem->length[0] = '\0';
 		elem->length[1] = '\0';
 	}
-	if (elem->data == 0 && ft_strchr(elem->flags, '#')) //&&getbase(elem->argtype) != 10
-		(ft_strchr(elem->flags, '#'))[0] = '/';
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
 	else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
 			|| elem->argtype == 'o' || elem->argtype == 'O' || elem->argtype == 'u'
 			|| elem->argtype == 'U')
 		transform_unsigned(elem);
+	if (((char*)elem->data)[0] == '0' && ft_strchr(elem->flags, '#')) //&&getbase(elem->argtype) != 10
+		(ft_strchr(elem->flags, '#'))[0] = '/';
 	if (elem->data == NULL)
 		exit_app("ova cisto za proverka");
 	num_flags_handler(elem);
 }
 
-void	add_hash(t_elem *elem)
+int		add_hash(t_elem *elem)
 {
 	int		hash;
 	char	*temp;
 	char	*result;
-	int		spaces;
 
-	spaces = 0;
 	hash = 0;
 	temp = NULL;
 	if (ft_strchr(elem->flags, '#') && getbase(elem->argtype) != 10)
@@ -180,18 +189,17 @@ void	add_hash(t_elem *elem)
 	//	hash = (((char *)elem->data)[0] == '0' ? 0 : 1);
 	if (hash)
 	{
-		while (((char*)elem->data)[spaces] == ' ')
-			spaces++;
-		if (elem->argtype == 'X' || elem->argtype == 'x')
+		if (elem->argtype == 'X' || elem->argtype == 'x') // || == 'p' za pointer
 			hash++;
-		temp = ft_strnew(hash + spaces);
-		ft_strncpy(temp, (const char*)elem->data, spaces);
+		temp = ft_strnew(hash);
 		ft_strncpy(temp, "0x", hash);
-		result = ft_strjoin(temp, &(elem->data[spaces]));
+		result = ft_strjoin(temp, elem->data);
 		temp = elem->data;
 		elem->data = result;
 		ft_memdel((void **)&temp);
+		return (hash); //mozam da go trgnam i samo return hash nadvor od ova
 	}
+	return (0);
 }
 
 /*
