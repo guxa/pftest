@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 01:13:15 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/13 20:50:19 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	transform_int(t_elem *elem)
 	intmax_t	number;
 
 	number = (intmax_t)elem->data; 
-	if (number == 0) // bez ova bea ok, ako imat nekoj gresni komentiraj
+	if (number == 0)
 		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
 	else if (elem->length[0] == '\0' && elem->argtype != 'D')
 		elem->data = ft_itoa((int)number);
@@ -36,6 +36,34 @@ void	transform_int(t_elem *elem)
 		elem->data = ft_itoa((intmax_t)number);
 }
 
+void	transform_unsigned(t_elem *elem)
+{
+	uintmax_t	number;
+	int			base;
+
+	number = (uintmax_t)elem->data;
+	base = getbase(elem->argtype);
+	if (number == 0)
+		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
+	else if (elem->argtype == 'p')
+		elem->data = unsigned_itoa((unsigned long)elem->data, 16);
+	else if (elem->length[0] == '\0')
+		elem->data = unsigned_itoa((unsigned int)elem->data, base);
+	else if (elem->length[0] == 'h' && elem->length[1] == 'h')
+		elem->data = unsigned_itoa((unsigned char)elem->data, base);
+	else if (elem->length[0] == 'h')
+		elem->data = unsigned_itoa((unsigned short)elem->data, base);
+	else if (elem->length[0] == 'l' && elem->length[1] == 'l')
+		elem->data = unsigned_itoa((unsigned long long)elem->data, base);
+	else if (elem->length[0] == 'l')
+		elem->data = unsigned_itoa((unsigned long)elem->data, base);
+	else if (elem->length[0] == 'z')
+		elem->data = unsigned_itoa((size_t)elem->data, base);
+	else if (elem->length[0] == 'j')
+		elem->data = unsigned_itoa((uintmax_t)elem->data, base);
+	// if (elem->argtype == 'X')
+	//  	ft_strmap(elem->data, ft_toupper);
+}
 
 
 void	add_padding(t_elem *elem, int sign)
@@ -98,6 +126,7 @@ void	num_flags_handler(t_elem *elem)
 	length = ft_strlen((const char*)elem->data);
 	if (elem->precision > -1 && elem->precision > length - sign)
 		handle_prec(elem, length);
+	add_hash(elem);
 	if (ft_strchr(elem->flags, '+') && is_signed(elem->argtype)	&& !sign)
 	{
 		temp = ft_strjoin("+", (const char *)elem->data);
@@ -119,17 +148,42 @@ void	num_flags_handler(t_elem *elem)
 void	number_handler(t_elem *elem)
 {
 	if (elem->argtype >= 'A' && elem->argtype < 'X')
-		{
-			elem->length[0] = '\0';
-			elem->length[1] = '\0';
-		}
+	{
+		elem->length[0] = '\0';
+		elem->length[1] = '\0';
+	}
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
-	// else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
-	// 		|| elem->argtype == 'o' || elem->argtype == 'O' || elem->argtype == 'u'
-	// 		|| elem->argtype == 'U')
-	// 	transform_unsigned();
+	else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
+			|| elem->argtype == 'o' || elem->argtype == 'O' || elem->argtype == 'u'
+			|| elem->argtype == 'U')
+		transform_unsigned(elem);
+	if (elem->data == NULL)
+		exit_app("ova cisto za proverka");
 	num_flags_handler(elem);
+}
+
+void	add_hash(t_elem *elem)
+{
+	int		hash;
+	char	*temp;
+	char	*result;
+
+	hash = 0;
+	temp = NULL;
+	if (ft_strchr(elem->flags, '#') && getbase(elem->argtype) != 10)
+		hash = (((char *)elem->data)[0] == '0' ? 0 : 1);
+	if (hash)
+	{
+		if (elem->argtype == 'X' || elem->argtype == 'x')
+			hash++;
+		temp = ft_strnew(hash);
+		ft_strncpy(temp, "0x", hash);
+		result = ft_strjoin(temp, elem->data);
+		temp = elem->data;
+		elem->data = result;
+		ft_memdel((void **)&temp);
+	}
 }
 
 /*
