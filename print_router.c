@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/11 17:58:02 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/13 17:54:42 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ size_t		print_padding(char p, size_t len, int fd)
 	return (len);
 }
 
-// void	number_handler(t_elem *elem)
-// {
-
-// }
-
-
 int		string_printer(t_elem *elem, int fd)
 {
 	size_t	string_len;
@@ -41,13 +35,38 @@ int		string_printer(t_elem *elem, int fd)
 	to_print = string_len;
 	if (elem->precision != -1 && elem->precision < (int)string_len)
 		to_print = elem->precision;
-	if (to_print < elem->width && !ft_strchr(elem->flags, '-'))
+	if (to_print < elem->width && ft_strchr(elem->flags, '-') == NULL)
 		count += print_padding(' ', elem->width - to_print, fd); /// ovde praznovo mesto mojt da ne e fiksno da zavisit od dali imat 0 vo flags
 	count += ft_putstr_part((const char*)elem->data, to_print, fd);
 	if (to_print < elem->width && ft_strchr(elem->flags, '-') != NULL)
 		count += print_padding(' ', elem->width - to_print, fd);
 
 	return (count);	
+}
+
+int		char_printer(t_elem *elem, int fd)
+{
+	int		count;
+	char	pad;
+	int		dash;
+
+	count = 0;
+	dash = (ft_strchr(elem->flags, '-') == NULL ? 0 : 1);
+	pad = (ft_strchr(elem->flags, '0') == NULL ? ' ' : '0');
+	pad = (dash == 0 ? pad : ' ');
+	if (elem->width > 1 && dash == 0)
+		count += print_padding(pad, elem->width - 1, fd);
+//	if (elem->length[0] == 'l' && elem->length[1] == '\0')
+//		count += 0; // ovde funkcija za wide char trebit ova samo za proba
+//	else
+//	{
+		ft_putchar_fd((char)elem->data, fd);
+		count++;
+//	}
+	// 	funkcija za printanje na wchar
+	if (elem->width > 1 && dash)
+		count += print_padding(pad, elem->width - 1, fd);
+	return (count);
 }
 
 int		letter_printer(t_elem *elem, int fd)
@@ -62,6 +81,8 @@ int		letter_printer(t_elem *elem, int fd)
 	}
 	else if (elem->argtype == 's' || elem->argtype == 'S')
 		count = string_printer(elem, fd);
+	else if (elem->argtype == 'c' || elem->argtype == 'C')
+		count = char_printer(elem, fd);
 
 	return (count);
 }
@@ -73,9 +94,9 @@ size_t	print_routes(t_elem *list, int fd)
 	printed_char = 0;
 	while (list)
 	{
-		if (is_strchar(list->argtype) == 0)
+		if (is_strchar(list->argtype) == 0 && list->argtype != '%')
 		{
-			//numberhandler
+			number_handler(list);
 		}
 		printed_char += letter_printer(list, fd);
 		
