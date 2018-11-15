@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 17:54:42 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 17:28:33 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ int		letter_printer(t_elem *elem, int fd)
 	int count;
 
 	count = 0;
-	if (is_strchar(elem->argtype) == 0)
+	if (is_strchar(elem->argtype) == 0 && elem->argtype != '%')
 	{
 		count = ft_strlen((char*)elem->data);
 		ft_putstr_fd(elem->data, fd);
 	}
-	else if (elem->argtype == 's' || elem->argtype == 'S')
+	else if (elem->argtype == 's' || elem->argtype == 'S' || elem->argtype == '%')
 		count = string_printer(elem, fd);
 	else if (elem->argtype == 'c' || elem->argtype == 'C')
 		count = char_printer(elem, fd);

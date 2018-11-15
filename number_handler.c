@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 15:24:11 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 16:18:28 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	transform_unsigned(t_elem *elem)
 		elem->data = unsigned_itoa((size_t)elem->data, base);
 	else if (elem->length[0] == 'j')
 		elem->data = unsigned_itoa((uintmax_t)elem->data, base);
-	// if (elem->argtype == 'X')
-	//  	ft_strmap(elem->data, ft_toupper);
+	if (elem->argtype == 'p')
+		elem->flags[0] = '#';
 }
 
 // static char	*pointer(t_plist *list)
@@ -158,6 +158,9 @@ void	num_flags_handler(t_elem *elem)
 
 void	number_handler(t_elem *elem)
 {
+	int i;
+
+	i = -1;
 	if (elem->argtype >= 'A' && elem->argtype < 'X')
 	{
 		elem->length[0] = '\0';
@@ -165,15 +168,16 @@ void	number_handler(t_elem *elem)
 	}
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
-	else if (elem->argtype == 'x' || elem->argtype == 'X' || elem->argtype == 'p'
-			|| elem->argtype == 'o' || elem->argtype == 'O' || elem->argtype == 'u'
-			|| elem->argtype == 'U')
+	else
 		transform_unsigned(elem);
-	if (((char*)elem->data)[0] == '0' && ft_strchr(elem->flags, '#')) //&&getbase(elem->argtype) != 10
+	if (((char*)elem->data)[0] == '0' && ft_strchr(elem->flags, '#') && elem->argtype != 'p') //&&getbase(elem->argtype) != 10
 		(ft_strchr(elem->flags, '#'))[0] = '/';
 	if (elem->data == NULL)
 		exit_app("ova cisto za proverka");
 	num_flags_handler(elem);
+	if (elem->argtype == 'X')
+		while (((char*)elem->data)[++i])
+			((char*)elem->data)[i] = ft_toupper(((char*)elem->data)[i]);
 }
 
 int		add_hash(t_elem *elem)
@@ -189,7 +193,7 @@ int		add_hash(t_elem *elem)
 	//	hash = (((char *)elem->data)[0] == '0' ? 0 : 1);
 	if (hash)
 	{
-		if (elem->argtype == 'X' || elem->argtype == 'x') // || == 'p' za pointer
+		if (getbase(elem->argtype) == 16) // || == 'p' za pointer
 			hash++;
 		temp = ft_strnew(hash);
 		ft_strncpy(temp, "0x", hash);

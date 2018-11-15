@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 18:17:34 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 00:47:54 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/13 19:17:08 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,40 @@ int		countdigits(long long number, int base)
 char	*ft_itoa(long long n)
 {
 	return (ft_itoa_base(n, 10));
+}
+
+int		un_countdigits(uintmax_t number, int base)
+{
+	int size;
+
+	size = 0;
+	if (number == 0)
+		return (1);
+	while (number)
+	{
+		size++;
+		number = number / base;
+	}
+	return (size);
+}
+
+char	*unsigned_itoa(uintmax_t number, int base)
+{
+	int			size;
+	char		*numtable;
+	char		*string;
+
+	numtable = ft_strnew(16);
+	numtable = "0123456789abcdef";
+	size = un_countdigits(number, base);
+	string = ft_strnew((size > 0 ? size : 1));
+	if (!string)
+		return (NULL);
+	(string ? string[0] = '0' : 0);
+	while (size > 0)
+	{
+		string[--size] = numtable[number % base];
+		number = number / base;
+	}
+	return (string);
 }
