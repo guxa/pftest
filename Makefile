@@ -6,12 +6,12 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 18:05:12 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/14 18:08:02 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = libftprintf.a
+NAME = ftprintf
 LIBFT = libft
 FLAGS = -Wall -Wextra #-Werror
 
@@ -37,7 +37,7 @@ $(OBJECTS_DIR):
 	@echo "Directory objects was created"
 
 $(OBJECTS_DIR)%.o : %.c
-	gcc $(FLAGS) $(INCLUDES) -L$(LIB) -c $< -o $@
+	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIB):
 		@make -C $(LIBFT)
@@ -49,7 +49,7 @@ test:	$(OBJECTS)
 		gcc $(OBJECTS) $(LIB) tests/main.c -o tests/a.out
 
 clean:
-		#make -C $(LIBFT) clean
+		make -C $(LIBFT) clean
 		@rm -rf $(OBJECTS_DIR)
 
 fclean:	clean
