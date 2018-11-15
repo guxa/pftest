@@ -6,7 +6,7 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 17:30:52 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/14 18:00:42 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ test:	$(OBJECTS)
 		gcc $(OBJECTS) $(LIB) tests/main.c -o tests/a.out
 
 clean:
-		make -C $(LIBFT) clean
+		#make -C $(LIBFT) clean
 		@rm -rf $(OBJECTS_DIR)
 
 fclean:	clean
