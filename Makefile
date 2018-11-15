@@ -6,12 +6,12 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 18:00:42 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/14 18:03:34 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = ftprintf
+NAME = libftprintf.a
 LIBFT = libft
 FLAGS = -Wall -Wextra #-Werror
 
