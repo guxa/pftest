@@ -6,7 +6,7 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 18:03:34 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/14 18:05:12 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(OBJECTS_DIR):
 	@echo "Directory objects was created"
 
 $(OBJECTS_DIR)%.o : %.c
-	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+	gcc $(FLAGS) $(INCLUDES) -L$(LIB) -c $< -o $@
 
 $(LIB):
 		@make -C $(LIBFT)
