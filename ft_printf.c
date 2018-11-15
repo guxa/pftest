@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:23:05 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 17:53:22 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 18:49:42 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int			ft_printf(const char *format, ...)
 // 	// i = ft_printf("5c	test: %5c end\n", str2[0]);
 
 // 	printf("\n>>>>>>>d & i tests:\n");
+// 	ft_printf("S :%S\n", "@@");
 // 	ft_printf("test %.0% :%03.X\n", 720306);
 // 	ft_printf("Pointer test:%10hhp\n", 455);
 // 	printf("ORG Pointer test:%10hhp\n", 455);

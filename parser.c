@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:22:26 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/12 19:52:59 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 18:47:25 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int process_width_prec(const char *format, int start, t_elem *new_elem, va_list 
 	int	num;
 
 	num = 0;
-	if (ft_isdigit(format[start])) // ne proveram dali e '-' zs process_flags ke go zemit
+	if (ft_isdigit(format[start]))
 	{
 		new_elem->width = ft_atoi(&format[start]);
-		num = countdigits(new_elem->width, 10); // naprajv izmena vo countwords za ova: mozen problem ako brojot e 0, dali ke vratit countdigits 1?
+		num = countdigits(new_elem->width, 10);
 	}
 	if (format[start] == '*')	// ova e bonus mozda i ne trebit ?
 	{
@@ -50,7 +50,7 @@ int process_width_prec(const char *format, int start, t_elem *new_elem, va_list 
 			new_elem->precision = 0;
 		else
 		{
-			new_elem->precision = ft_atoi(&format[start]);  // mozda ke ni trebit uslov za ako e - precision da go smenime vo 0
+			new_elem->precision = ft_atoi(&format[start]);
 			num += countdigits(new_elem->precision, 10);
 		}
 	}
@@ -64,7 +64,6 @@ int	process_flags(const char *format, int start, t_elem *new_elem)
 	countflags = 0;
 	while (is_flag(format[start]))
 	{
-		//mozda da se dodajt strchr proverka za ako go imat nekoj flag dva pati da ne go dodavame
 		new_elem->flags[countflags] = format[start];
 		countflags++;
 		start++;
@@ -85,7 +84,7 @@ int	format_data(t_elem **list, const char *format, va_list ap, int pos)
 		pos += process_width_prec(format, pos, new, ap);
 	if (format[pos] && is_length(format[pos]))
 		pos += get_length(format, pos, new);
-	if (format[pos] && (is_printvar(format[pos]) == 0)) // ova mozda error trebit da frlit?
+	if (format[pos] && (is_printvar(format[pos]) == 0))
 		exit_app("Invalid specifier\n usage: ft_printf %%[flags][width][.precision][length]specifier");
 	if (format[pos])
 	{

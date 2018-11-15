@@ -6,31 +6,11 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:38:54 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 17:51:55 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 18:38:21 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
-
-// t_elem	*newlistelem(char const *inputstr, int start, int end)
-// {
-// 	char		*cuttedstr;
-// 	t_elem	*templist;
-
-// 	templist = NULL;
-// 	cuttedstr = cutstr(inputstr, start, end);
-// 	if (!cuttedstr)
-// 		return (NULL);
-// 	if ((templist = (t_elem*)malloc(sizeof(t_elem))))
-// 	{
-// 		templist->next = NULL;
-// 		templist->is_arg = 0;
-// 		templist->param = cuttedstr;
-// 		templist->argtype = 's';
-// 		return (templist);
-// 	}
-// 	return (NULL);
-// }
 
 t_elem	*add_string_part(char const *inputstr, int start, int end)
 {
