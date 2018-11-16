@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:23:05 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 19:43:00 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 23:45:45 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,83 +32,89 @@ int			ft_printf(const char *format, ...)
 // A format specifier follows this prototype: [see compatibility note below] 
 // %[flags][width][.precision][length]specifier
 
-int main()
-{
-	char *str2;
-	int i;
+// int main()
+// {
+// 	char *str2;
+// 	int i;
 
-	i = 0;
-	str2 = "satot e 5:15";
-	//ft_printf("test jane %5dbla %.12s", 100, str2);
+// 	i = 0;
+// 	str2 = "satot e 5:15";
+// 	//ft_printf("test jane %5dbla %.12s", 100, str2);
 
-	// printf("Original: test %d\n", 192);
-	// printf("Precision:\n");
-	// printf("test %%.6d: %.6d\n", 192);
-	// printf("test %%17.d: %17.d\n", 192);
-	// printf("test %%.*d: %.*d\n", 7, 192);
+// 	// printf("Original: test %d\n", 192);
+// 	// printf("Precision:\n");
+// 	// printf("test %%.6d: %.6d\n", 192);
+// 	// printf("test %%17.d: %17.d\n", 192);
+// 	// printf("test %%.*d: %.*d\n", 7, 192);
 
-	// printf("\nWIDTH and precision string:\n");
-	// i = printf("10.3s	test: %10.3s\n", str2);
-	// printf("%%.s	test: %.s\n", str2);
-	// printf("%%.5s	test: %.5s\n", str2);
-	// printf("%%10.3s	null test: %10.3s\n", NULL);
+// 	// printf("\nWIDTH and precision string:\n");
+// 	// i = printf("10.3s	test: %10.3s\n", str2);
+// 	// printf("%%.s	test: %.s\n", str2);
+// 	// printf("%%.5s	test: %.5s\n", str2);
+// 	// printf("%%10.3s	null test: %10.3s\n", NULL);
 
-	// ft_printf("\n>>>>>>>my ft_printf:\n");
-	// i = ft_printf("10.3s	test: %10.3s\n", str2);
+// 	// ft_printf("\n>>>>>>>my ft_printf:\n");
+// 	// i = ft_printf("10.3s	test: %10.3s\n", str2);
 
-	// printf("\nWIDTH and precision CHAR:\n");
-	// i = printf("-10c	test: %-10c end\n", str2[0]);
-	// i = printf("%%c	test: %c end\n", 0);
-	// i = printf("5c	test: %5c end\n", str2[0]);
+// 	// printf("\nWIDTH and precision CHAR:\n");
+// 	// i = printf("-10c	test: %-10c end\n", str2[0]);
+// 	// i = printf("%%c	test: %c end\n", 0);
+// 	// i = printf("5c	test: %5c end\n", str2[0]);
 
-	// ft_printf("\n>>>>>>>my ft_printf CHAR:\n");
-	// i = ft_printf("-10c	test: %-10c end\n", str2[0]);
-	// i = ft_printf("%%c	test: %c end\n", 0);
-	// i = ft_printf("5c	test: %5c end\n", str2[0]);
+// 	//ft_printf("^.^/%#54.24zo^.^/", -2067268156);
+// 	ft_printf(">------------<%31.48ls>------------<", NULL);
+// 	float testf = -1.200050; //5.02345062345;
+// 	double testf2 = 1.200000;
+// 	long double testf3 = 1.2000055;
+// 	printf("%%10f test:%10f\n", testf);
+// 	printf("%%10.3f test:%10.3f\n", testf);
+// 	printf("%%-10f test:%-10f\n", testf);
+// 	printf("%%+-10f test:%+-10f\n\n", testf);
 
-	float testf = 1.200050; //5.02345062345;
-	double testf2 = 1.200000;
-	long double testf3 = 1.2000055;
-	printf("%%f test:%f\n", testf);
-	printf("%%lf test:%lf\n", testf2);
-	printf("%%Lf test:%Lf\n", testf3);
-	printf("printf UP^ <><><> MY ft_printf DOWN:\n");
-	ft_printf("%%f test:%f\n", testf);
-	ft_printf("%%lf test:%lf\n", testf2);
-	ft_printf("%%Lf test:%Lf\n", testf3);
+// 	ft_printf("%%10f test:%10f\n", testf);
+// 	ft_printf("%%10.3f test:%10.3f\n", testf);
+// 	ft_printf("%%-10f test:%-10f\n", testf);
+// 	ft_printf("%%+-10f test:%+-10f\n\n", testf);
 
-	// printf("%%.9f test:%.f\n", testf);
-	// printf("%%.9lf test:%lf\n", testf2);
-	// printf("%%Lf test:%Lf\n", testf3);
+// 	printf("%%lf test:%lf\n", testf2);
+// 	printf("%%Lf test:%Lf\n", testf3);
+// 	printf("printf UP^ <><><> MY ft_printf DOWN:\n");
+// 	ft_printf("%%f test:%f\n", testf);
+// 	ft_printf("%%lf test:%lf\n", testf2);
+// 	ft_printf("%%Lf test:%Lf\n", testf3);
 
-	// t_elem *elem = malloc(sizeof(t_elem));
-	// elem->precision = 0;
-	// elem->data = &testf;
-	// elem->length = ft_strnew(2);
-	// handle_floats(elem);
-	// elem->data = &testf3;
-	// elem->length[0] = 'L';
-	// handle_floats(elem);
+// 	// printf("%%.9f test:%.f\n", testf);
+// 	// printf("%%.9lf test:%lf\n", testf2);
+// 	// printf("%%Lf test:%Lf\n", testf3);
 
-	printf("\n>>>>>>>d & i tests:\n");
-	ft_printf("S :%S\n", "@@");
-	ft_printf("test %.0% :%03.X\n", 720306);
-	// ft_printf("Pointer test:%10hhp\n", 455);
-	// printf("ORG Pointer test:%10hhp\n", 455);
-	// ft_printf("MY Pointer test:%10hp\n", 1);
-	// printf("ORG Pointer test:%10hp\n", 1);
-	printf("Pointer test:%3p\n", (void *)1);
-	//ft_printf("test:%#3jx\n", 0); // %#.3jx,16 %#-+03jx
-	//i = ft_printf("U test - MY printf:%u\n", 4294967296);
-	//i = printf("U test - org printf:%u\n", 4294967296);
+// 	// t_elem *elem = malloc(sizeof(t_elem));
+// 	// elem->precision = 0;
+// 	// elem->data = &testf;
+// 	// elem->length = ft_strnew(2);
+// 	// handle_floats(elem);
+// 	// elem->data = &testf3;
+// 	// elem->length[0] = 'L';
+// 	// handle_floats(elem);
 
-	ft_printf("hd test:%hd\n", (short)-3455);
-	ft_printf("hhd test:%hhd\n", (char)-3455);
-	ft_printf("ld test:%ld\n", (long)2147483647);
-	ft_printf("lld test:%lld\n", (long long)2147483647);
-	ft_printf("jd test:%jd\n", (intmax_t)2147483647);
-	ft_printf("zd test:%zd\n", (size_t)2147483647);
-}
+// 	// printf("\n>>>>>>>d & i tests:\n");
+// 	// ft_printf("S :%S\n", "@@");
+// 	// ft_printf("test %.0% :%03.X\n", 720306);
+// 	// // ft_printf("Pointer test:%10hhp\n", 455);
+// 	// // printf("ORG Pointer test:%10hhp\n", 455);
+// 	// // ft_printf("MY Pointer test:%10hp\n", 1);
+// 	// // printf("ORG Pointer test:%10hp\n", 1);
+// 	// printf("Pointer test:%3p\n", (void *)1);
+// 	// //ft_printf("test:%#3jx\n", 0); // %#.3jx,16 %#-+03jx
+// 	// //i = ft_printf("U test - MY printf:%u\n", 4294967296);
+// 	// //i = printf("U test - org printf:%u\n", 4294967296);
+
+// 	// ft_printf("hd test:%hd\n", (short)-3455);
+// 	// ft_printf("hhd test:%hhd\n", (char)-3455);
+// 	// ft_printf("ld test:%ld\n", (long)2147483647);
+// 	// ft_printf("lld test:%lld\n", (long long)2147483647);
+// 	// ft_printf("jd test:%jd\n", (intmax_t)2147483647);
+// 	// ft_printf("zd test:%zd\n", (size_t)2147483647);
+// }
 
 /* 		>>>>>>>>	PRECISION	<<<<<<<<
 	If the precision is given as just '.', or the precision is negative,

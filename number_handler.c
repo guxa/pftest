@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 20:05:09 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 12:20:08 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	transform_unsigned(t_elem *elem)
 // }
 /*
 ** logikata za i, e bitna i za goleminata na stringot, zs ako precision e 0, nemat potreba
-** + 1 byte za tockata da se alocirat...
+** + 1 byte za tockata da se alocirat... elem->precision moram < 0 da go napram
+** ~ za da ne vlegvit vo handle_prec, a -2 zaradi vo width logikata za '0' flag
 */
 
 void	float_string(t_elem *elem, long long whole_num, double decimals)
@@ -95,13 +96,14 @@ void	float_string(t_elem *elem, long long whole_num, double decimals)
 				ft_strcat(elem->data, "0");
 		ft_strcat(elem->data, temp);
 		free(temp);
+		elem->precision = -2; 
 	}	
 	free(result);
 }
 
 void	handle_floats(t_elem *elem, va_list ap)
 {
-	long long	whole_num;
+	intmax_t	whole_num;
 	int			i;
 	double		decimals;
 	double		incr;
@@ -119,13 +121,14 @@ void	handle_floats(t_elem *elem, va_list ap)
 		decimals = va_arg(ap, double);//*((double*)elem->data);
 	else //if (elem->length[0] == 'L')
 		decimals = va_arg(ap, long double);//*((long double*)elem->data);
-	decimals += incr;
-	whole_num = (long long)(decimals);
+	decimals += (decimals < 0 ? -incr : incr);
+	whole_num = (intmax_t)(decimals);
 	decimals = decimals - whole_num;
+	decimals = (decimals < 0 ? -decimals : decimals);
 	while (--i)
 		decimals = decimals * 10;
 	float_string(elem, whole_num, decimals);
-	printf("my %s float: %s\n", elem->length, (char*)elem->data);
+	//printf("my %s float: %s\n", elem->length, (char*)elem->data);
 }
 
 /*
@@ -146,9 +149,7 @@ void	number_handler(t_elem *elem)
 	}
 	if (elem->argtype == 'd' || elem->argtype == 'D' || elem->argtype == 'i')
 		transform_int(elem);
-	// else if (elem->argtype == 'f')
-	// 	return (handle_floats(elem));
-	else
+	else if (elem->argtype != 'f')
 		transform_unsigned(elem);
 	if (((char*)elem->data)[0] == '0' && ft_strchr(elem->flags, '#') && elem->argtype != 'p') //&&getbase(elem->argtype) != 10
 		(ft_strchr(elem->flags, '#'))[0] = '/';

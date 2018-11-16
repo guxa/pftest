@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 22:37:43 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 20:18:02 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 20:57:00 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int			is_length(char c)
 
 int			is_signed(char c)
 {
-	if (c == 'd' || c == 'D' || c == 'i')
+	if (c == 'd' || c == 'D' || c == 'i' || c == 'f')
 		return (1);
 	return (0);
 }

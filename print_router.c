@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 19:56:52 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 23:44:13 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int		string_printer(t_elem *elem, int fd)
 	int		count;
 	size_t	to_print;
 
-	if (elem->data == NULL && elem->precision == -1)
-		return (ft_putstr_part("(null)", 6, fd));
+	// if (elem->data == NULL && elem->precision == -1)
+	// 	return (ft_putstr_part("(null)", 6, fd));
+	if (elem->data == NULL)
+		elem->data = "(null)";
 	string_len = ft_strlen((const char*)elem->data);
 	count = 0;
 	to_print = string_len;
@@ -94,7 +96,7 @@ size_t	print_routes(t_elem *list, int fd)
 	printed_char = 0;
 	while (list)
 	{
-		if (is_strchar(list->argtype) == 0 && list->argtype != '%' && list->argtype != 'f')
+		if (is_strchar(list->argtype) == 0 && list->argtype != '%')
 		{
 			number_handler(list);
 		}
