@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:22:26 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 18:47:25 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 19:54:27 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ int	format_data(t_elem **list, const char *format, va_list ap, int pos)
 	{
 		new->argtype = format[pos];
 		pos++;
-		new->data = (new->argtype != '%' ? va_arg(ap, void*) : ft_strdup("%")); // ili null
+		if (new->argtype == 'f')
+			handle_floats(new, ap);
+		else
+			new->data = (new->argtype != '%' ? va_arg(ap, void*) : ft_strdup("%")); // ili null
 		new->is_arg = 1; // ova ne znam so uloga bi imalo ali ajde
 	}
 	listadd(list, new);

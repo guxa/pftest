@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 17:28:33 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 19:56:52 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		string_printer(t_elem *elem, int fd)
 	if (elem->precision != -1 && elem->precision < (int)string_len)
 		to_print = elem->precision;
 	if (to_print < elem->width && ft_strchr(elem->flags, '-') == NULL)
-		count += print_padding(' ', elem->width - to_print, fd); /// ovde praznovo mesto mojt da ne e fiksno da zavisit od dali imat 0 vo flags
+		count += print_padding(' ', elem->width - to_print, fd);
 	count += ft_putstr_part((const char*)elem->data, to_print, fd);
 	if (to_print < elem->width && ft_strchr(elem->flags, '-') != NULL)
 		count += print_padding(' ', elem->width - to_print, fd);
@@ -94,7 +94,7 @@ size_t	print_routes(t_elem *list, int fd)
 	printed_char = 0;
 	while (list)
 	{
-		if (is_strchar(list->argtype) == 0 && list->argtype != '%')
+		if (is_strchar(list->argtype) == 0 && list->argtype != '%' && list->argtype != 'f')
 		{
 			number_handler(list);
 		}

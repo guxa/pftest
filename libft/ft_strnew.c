@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 13:27:07 by jguleski          #+#    #+#             */
-/*   Updated: 2018/10/29 12:50:21 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 00:43:23 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ char	*ft_strnew(size_t size)
 	if (newstr == NULL)
 		return (NULL);
 	newstr[size] = '\0';
-	size = 0;
-	while (newstr[size])
-		newstr[size++] = 0;
+	while (size--)
+		newstr[size] = 0;
 	return (newstr);
 }

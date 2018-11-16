@@ -6,12 +6,12 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 22:13:25 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/14 22:43:43 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = libftprintf.a
+NAME = libftprintf
 LIBFT = libft
 FLAGS = -Wall -Wextra -Werror
 
@@ -19,7 +19,7 @@ LIB = $(LIBFT)/libft.a
 
 SRC = ft_printf.c specifiers.c \
 	  list_funcs.c parser.c utilities.c \
-	  print_router.c number_handler.c
+	  print_router.c number_handler.c number_flags.c
 
 INCLUDES = -I. -I$(LIBFT)/includes/
 

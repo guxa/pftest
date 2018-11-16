@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:51:15 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 15:07:56 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/14 22:33:54 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*insert_string(char *to_insert, char *dest, int position, char pad)
 	ft_strcat(temp, to_insert);
 	ft_strcat(temp, &(dest[position]));
 	return (temp);
-	//ft_strcpy(&temp[hash], to_insert);
 }
 
 int		ft_putstr_part(char const *str, int size, int fd)

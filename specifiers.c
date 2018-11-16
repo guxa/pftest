@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 22:37:43 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 00:30:32 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 20:18:02 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			is_printvar(char c)
 {
-	if (c == 's' || c == 'c' || c == 'd' || c == 'i' || c == '%'
+	if (c == 's' || c == 'c' || c == 'd' || c == 'i' || c == '%' || c == 'f'
 			|| c == 'p' || c == 'o' || c == 'u' || c == 'x' || c == 'S'
 			|| c == 'C' || c == 'X' || c == 'U' || c == 'O' || c == 'D')
 		return (1);
@@ -30,7 +30,7 @@ int			is_flag(char c)
 
 int			is_length(char c)
 {
-	if (c == 'h' || c == 'l' || c == 'j' || c == 'z' || c == '0')
+	if (c == 'h' || c == 'l' || c == 'j' || c == 'z' || c == '0' || c == 'L')
 		return (1);
 	return (0);
 }

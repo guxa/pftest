@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 22:25:49 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 15:02:33 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 19:53:39 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@ typedef struct	s_pelement
 {
 	void				*data;
 	char				*flags;
-	size_t				width; // ova int bese
+	size_t				width;
 	int					precision;
 	char				*length;
 	char				argtype;
 	int					is_arg;
-	//int					ischarexception;
 	struct s_pelement	*next;
 }				t_elem;
 
+void		handle_floats(t_elem *elem, va_list ap);
+void		num_flags_handler(t_elem *elem);
 char		*insert_string(char *to_insert, char *dest, int hash, char pad);
 int			add_hash(t_elem *elem);
 int			getbase(char spec);
