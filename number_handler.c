@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 16:58:37 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/15 18:50:25 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,54 @@ void	transform_unsigned(t_elem *elem)
 // 	list->flag[1] = '\0';
 // 	return (ft_max_itoabase(16, (unsigned long)list->arg, 0));
 // }
+// void	float_string(t_elem *elem, long long whole_num, double decimals)
+// {
+// 	char	*temp;
+// 	char	*result;
+// 	int		i;
+
+// 	temp = ft_itoa(decimals);
+// 	i = elem->precision + 1;
+// 	elem->data = ft_strnew(ft_strlen(result) + i - 1);
+// 	ft_strcat(elem->data, result);
+// 	ft_strcat(elem->data, ".");
+// 	free(result);
+// 	if ((i = (i - 1) - ft_strlen(temp)) != 0)
+// 		while (i--)
+// 			ft_strcat(elem->data, "0");
+// 	ft_strcat(elem->data, temp);
+// 	free(temp);
+
+// }
 
 void	handle_floats(t_elem *elem)
 {
 	long long	whole_num;
-	long double	*number;
 	char		*result;
 	int			i;
 	char		*temp;
+	double test;
+	double	incr;
 
-
-	i = 8; // 8 za 7 iteracii
-	//if (elem->length[0] == '\0')
-		number = elem->data;
-	whole_num = (int)(*number);
-	*number = *number - whole_num;
+	incr = 0.5;
+	i = elem->precision + 1;
+	while (elem->precision-- > 0)
+		incr = incr / 10;
+	elem->precision = i - 1;
+	if (elem->length[0] == '\0')
+		test = *((float*)elem->data);
+	else if (elem->length[0] == 'l')
+		test = *((double*)elem->data);
+	else //if (elem->length[0] == 'L')
+		test = *((long double*)elem->data);
+	test += incr;
+	whole_num = (long long)(test);
+	test = test - whole_num;
 	result = ft_itoa(whole_num);
 	while (--i)
-		*number = *number * 10;
-	temp = ft_itoa(*number);
-	i = 8;
-	//if (ft_strlen(temp) != i - 1)
+		test = test * 10;
+	temp = ft_itoa(test);
+	i = elem->precision + 1;
 	elem->data = ft_strnew(ft_strlen(result) + i - 1);
 	ft_strcat(elem->data, result);
 	ft_strcat(elem->data, ".");
@@ -102,6 +129,7 @@ void	handle_floats(t_elem *elem)
 			ft_strcat(elem->data, "0");
 	ft_strcat(elem->data, temp);
 	free(temp);
+	printf("%s\n", (char*)elem->data);
 }
 	// char		*c;
 	// temp = ft_strnew(i -1);
