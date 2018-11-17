@@ -6,12 +6,12 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/16 15:21:10 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/16 18:24:32 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME = libftprintf
+NAME = libftprintf.a
 LIBFT = libft
 FLAGS = -Wall -Wextra -Werror
 
@@ -30,9 +30,6 @@ OBJECTS	= $(addprefix $(OBJECTS_DIR), $(OBJECTS_LIST))
 LIBFT_OBJ = libft/objects
 
 all: $(NAME)
-
-# $(NAME): $(LIB) $(OBJECTS_DIR) $(OBJECTS)
-# 	 gcc $(FLAGS) $(INCLUDES) $(OBJECTS) $(LIB) -o $(NAME)
 
 $(OBJECTS_DIR):
 	@mkdir -p $(OBJECTS_DIR)
@@ -61,8 +58,8 @@ fclean:	clean
 re: fclean all
 
 $(NAME): $(OBJECTS_DIR) $(OBJECTS) $(LIB) $(LIBFT_OBJ)
-		@ar rc libftprintf.a $(OBJECTS) $(LIBFT_OBJ)/*.o
-		@ranlib libftprintf.a
+		@ar rc $(NAME) $(OBJECTS) $(LIBFT_OBJ)/*.o
+		@ranlib $(NAME)
 		@echo "your lib is ready"
 
 $(LIBFT_OBJ):
