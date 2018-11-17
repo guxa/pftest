@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:38:54 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 17:55:52 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 18:39:52 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ t_elem		*add_string_part(char const *inputstr, int start, int end)
 		return (NULL);
 	}
 	new_elem = create_elem((void*)cuttedstr);
-	new_elem->argtype = 'S';
+	new_elem->argtype = 's';
+	new_elem->length[0] = 'Y';
 	return (new_elem);
 }
 
@@ -80,8 +81,8 @@ void		clear_list(t_elem *mainlist)
 		mainlist = mainlist->next;
 		free(temp->flags);
 		free(temp->length);
-		if (temp->argtype != 'c' && temp->argtype != 'C'
-			&& temp->argtype != 's')
+		if (is_strchar(temp->argtype) == 0
+			|| (temp->argtype == 's' && temp->length[0] == 'Y'))
 			free(temp->data);
 		free(temp);
 	}
