@@ -6,18 +6,17 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 12:20:08 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 17:50:08 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-
 void	transform_int(t_elem *elem)
 {
 	intmax_t	number;
 
-	number = (intmax_t)elem->data; 
+	number = (intmax_t)elem->data;
 	if (number == 0)
 		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
 	else if (elem->length[0] == '\0' && elem->argtype != 'D')
@@ -61,23 +60,15 @@ void	transform_unsigned(t_elem *elem)
 		elem->data = unsigned_itoa((size_t)elem->data, base);
 	else if (elem->length[0] == 'j')
 		elem->data = unsigned_itoa((uintmax_t)elem->data, base);
-	if (elem->argtype == 'p')
-		elem->flags[0] = '#';
 }
 
-// static char	*pointer(t_plist *list)
-// {
-// 	list->flag[0] = '#';
-// 	list->flag[1] = '\0';
-// 	return (ft_max_itoabase(16, (unsigned long)list->arg, 0));
-// }
 /*
-** logikata za i, e bitna i za goleminata na stringot, zs ako precision e 0, nemat potreba
-** + 1 byte za tockata da se alocirat... elem->precision moram < 0 da go napram
+** int i e biten i za goleminata na stringot, zs ako precision e 0, nemorat
+** +1 byte za tockata da se alocirat elem->precision moram < 0 da go napram
 ** ~ za da ne vlegvit vo handle_prec, a -2 zaradi vo width logikata za '0' flag
 */
 
-void	float_string(t_elem *elem, long long whole_num, double decimals)
+void	float_string(t_elem *elem, intmax_t whole_num, double decimals)
 {
 	char	*temp;
 	char	*result;
@@ -96,8 +87,8 @@ void	float_string(t_elem *elem, long long whole_num, double decimals)
 				ft_strcat(elem->data, "0");
 		ft_strcat(elem->data, temp);
 		free(temp);
-		elem->precision = -2; 
-	}	
+		elem->precision = -1;
+	}
 	free(result);
 }
 
@@ -105,7 +96,7 @@ void	handle_floats(t_elem *elem, va_list ap)
 {
 	intmax_t	whole_num;
 	int			i;
-	double		decimals;
+	long double	decimals;
 	double		incr;
 
 	incr = 0.5;
@@ -116,11 +107,11 @@ void	handle_floats(t_elem *elem, va_list ap)
 		incr = incr / 10;
 	i = elem->precision + 1;
 	if (elem->length[0] == '\0')
-		decimals = va_arg(ap, double);//*((float*)elem->data);
+		decimals = va_arg(ap, double);
 	else if (elem->length[0] == 'l')
-		decimals = va_arg(ap, double);//*((double*)elem->data);
-	else //if (elem->length[0] == 'L')
-		decimals = va_arg(ap, long double);//*((long double*)elem->data);
+		decimals = va_arg(ap, double);
+	else
+		decimals = va_arg(ap, long double);
 	decimals += (decimals < 0 ? -incr : incr);
 	whole_num = (intmax_t)(decimals);
 	decimals = decimals - whole_num;
@@ -128,13 +119,13 @@ void	handle_floats(t_elem *elem, va_list ap)
 	while (--i)
 		decimals = decimals * 10;
 	float_string(elem, whole_num, decimals);
-	//printf("my %s float: %s\n", elem->length, (char*)elem->data);
 }
 
 /*
-** ->ovde proverka za == 0 i '#' flag, za da se trgnit, zosto add_hash se povikvit
-** posle dodavanje precision, i togas ne se znajt dali brojot bil 0, ili od prec se nulite.
-** ->proverkava za < 'X', zoso za drugite golemi bukvi U O D undefined beh e length
+** ->ovde proverka za == 0 i '#' flag, za da se trgnit, zosto add_hash
+** se povikvit posle dodavanje precision, i togas ne se znajt
+** dali brojot bil 0, ili od prec se nulite... ->proverkata za < 'X',
+** zoso za drugite upper case specifiers U O D undefined beh e length
 */
 
 void	number_handler(t_elem *elem)
@@ -151,7 +142,8 @@ void	number_handler(t_elem *elem)
 		transform_int(elem);
 	else if (elem->argtype != 'f')
 		transform_unsigned(elem);
-	if (((char*)elem->data)[0] == '0' && ft_strchr(elem->flags, '#') && elem->argtype != 'p') //&&getbase(elem->argtype) != 10
+	if ((((char*)elem->data)[0] == '0' || ((char*)elem->data)[0] == '\0')
+		&& ft_strchr(elem->flags, '#') && elem->argtype != 'p')
 		(ft_strchr(elem->flags, '#'))[0] = '/';
 	if (elem->data == NULL)
 		exit_app("ova cisto za proverka");

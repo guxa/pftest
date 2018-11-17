@@ -6,33 +6,22 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 18:17:34 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/13 19:17:08 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 17:51:29 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** linija 34 i 45 base == 10 na e zs vo vezbana vikat
-**	deka drugi base trebit ko unsigned da se tretiret
-**	linija 33 i 34: ova e zaradi minimum integerot zs ako ne e Long,
-**	ne ja cuvat pozitivna brojkata ostanvit negativna
-** 	Linija 40 i 41 pukase 1Test malloc is not protected
-** 	izbrisana validaicja za base da e pomalo od 2 od linija 36
-*/
-
 #include "libft.h"
 
-char	*ft_itoa_base(long long number, int base)
+char	*ft_itoa_base(intmax_t number, int base)
 {
 	int			size;
-	long long	newnumber;
+	uintmax_t	newnumber;
 	char		*numtable;
 	char		*string;
 
-	numtable = ft_strnew(16);
 	numtable = "0123456789abcdef";
 	size = countdigits(number, base);
-	newnumber = number;
-	newnumber = (number > 0 ? number : -newnumber);
+	newnumber = (number > 0 ? number : -number);
 	if (number < 0 && base == 10)
 		size++;
 	string = ft_strnew((size > 0 ? size : 1));
@@ -49,7 +38,7 @@ char	*ft_itoa_base(long long number, int base)
 	return (string);
 }
 
-int		countdigits(long long number, int base)
+int		countdigits(intmax_t number, int base)
 {
 	int size;
 
@@ -64,7 +53,7 @@ int		countdigits(long long number, int base)
 	return (size);
 }
 
-char	*ft_itoa(long long n)
+char	*ft_itoa(intmax_t n)
 {
 	return (ft_itoa_base(n, 10));
 }

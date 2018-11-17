@@ -6,19 +6,19 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:51:15 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 22:33:54 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 17:52:34 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void		exit_app(const char *source)
+void	exit_app(const char *source)
 {
 	b_printf("%s\n", source);
 	exit(1);
 }
 
-int			getbase(char spec)
+int		getbase(char spec)
 {
 	if (spec == 'x' || spec == 'X' || spec == 'p')
 		return (16);

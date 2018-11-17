@@ -6,14 +6,13 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 23:22:26 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 19:54:27 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 17:54:11 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "printf.h"
 
-int	get_length(const char *format, int start, t_elem *new_elem)
+int		get_length(const char *format, int start, t_elem *new_elem)
 {
 	int	num;
 
@@ -28,7 +27,8 @@ int	get_length(const char *format, int start, t_elem *new_elem)
 	return (num);
 }
 
-int process_width_prec(const char *format, int start, t_elem *new_elem, va_list ap)
+int		process_width_prec(const char *format, int start, t_elem *new_elem,
+						va_list ap)
 {
 	int	num;
 
@@ -38,7 +38,7 @@ int process_width_prec(const char *format, int start, t_elem *new_elem, va_list 
 		new_elem->width = ft_atoi(&format[start]);
 		num = countdigits(new_elem->width, 10);
 	}
-	if (format[start] == '*')	// ova e bonus mozda i ne trebit ?
+	if (format[start] == '*')
 	{
 		num++;
 		new_elem->width = va_arg(ap, int);
@@ -57,7 +57,7 @@ int process_width_prec(const char *format, int start, t_elem *new_elem, va_list 
 	return (num);
 }
 
-int	process_flags(const char *format, int start, t_elem *new_elem)
+int		process_flags(const char *format, int start, t_elem *new_elem)
 {
 	int	countflags;
 
@@ -71,7 +71,7 @@ int	process_flags(const char *format, int start, t_elem *new_elem)
 	return (countflags);
 }
 
-int	format_data(t_elem **list, const char *format, va_list ap, int pos)
+int		format_data(t_elem **list, const char *format, va_list ap, int pos)
 {
 	t_elem	*new;
 
@@ -85,22 +85,22 @@ int	format_data(t_elem **list, const char *format, va_list ap, int pos)
 	if (format[pos] && is_length(format[pos]))
 		pos += get_length(format, pos, new);
 	if (format[pos] && (is_printvar(format[pos]) == 0))
-		exit_app("Invalid specifier\n usage: ft_printf %%[flags][width][.precision][length]specifier");
+		exit_app("Invalid specifier\n usage: \
+		ft_printf %%[flags][width][.precision][length]specifier");
 	if (format[pos])
 	{
-		new->argtype = format[pos];
-		pos++;
+		new->argtype = format[pos++];
 		if (new->argtype == 'f')
 			handle_floats(new, ap);
 		else
-			new->data = (new->argtype != '%' ? va_arg(ap, void*) : ft_strdup("%")); // ili null
-		new->is_arg = 1; // ova ne znam so uloga bi imalo ali ajde
+			new->data = (new->argtype != '%' ?
+						va_arg(ap, void*) : ft_strdup("%"));
 	}
 	listadd(list, new);
 	return (pos);
 }
 
-t_elem		*printf_parser(const char *format, va_list ap)
+t_elem	*printf_parser(const char *format, va_list ap)
 {
 	int			count;
 	int			position;

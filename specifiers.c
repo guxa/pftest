@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 22:37:43 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/15 20:57:00 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 17:56:29 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,3 @@ int			is_strchar(char c)
 		return (1);
 	return (0);
 }
-
-// c C
-// s S 
-// p 
-// d D 
-// i
-// o O 
-// u U 
-// x X 
-
-// samo za X imat razlika dali e mala ili golema bukva za drugitet isto e;
-
-// You must manage the flags #0-+ and space
-
-// You must manage the minimum field-width
-// You must manage the precision
-
-// You must manage the flags hh, h, l, ll, j, et z.
-
-
-// S - ke go tretirame isto ko s, zs i na linux.die.net pisit don't use
-// precision za 's', max broj na karakteri so ke se printet

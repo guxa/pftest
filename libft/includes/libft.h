@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/10 19:05:04 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/14 17:56:53 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/16 14:24:48 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct	s_list
 }				t_list;
 
 void			ft_putnbr(int nb);
-char			*ft_itoa(long long n);
+char			*ft_itoa(intmax_t n);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
@@ -90,7 +90,7 @@ void			ft_memdel(void **ap);
 char			*ft_strjoin(const char *str1, const char *str2);
 char			*ft_strcat(char *dest, const char *string);
 
-char			*ft_itoa_base(long long number, int base);
+char			*ft_itoa_base(intmax_t number, int base);
 
 int				b_printf(const char *format, ...);
 int				numberhandler(void *number, char type);
@@ -100,7 +100,7 @@ int				is_vartype(char c);
 int				parser(const char *format, va_list ap);
 char			*cutstr(char const *inputstr, int start, int end);
 char			*ft_strnew(size_t size);
-int				countdigits(long long number, int base);
+int				countdigits(intmax_t number, int base);
 int				myatoi_base(const char *str, int str_base);
 
 void			ft_putstr(char *str);

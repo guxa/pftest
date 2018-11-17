@@ -6,7 +6,7 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/14 22:43:43 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/16 15:21:10 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ $(LIB):
 		@make -C $(LIBFT)
 
 debug: $(SRC) $(LIB)
-		gcc $(FLAGS) -g $(INCLUDES) $(SRC) $(LIB) -o test-$(NAME)
+		gcc $(FLAGS) -g $(INCLUDES) $(SRC) main.c $(LIB) -o test-$(NAME)
 
 test:	$(OBJECTS)
 		gcc $(OBJECTS) $(LIB) tests/main.c -o tests/a.out
