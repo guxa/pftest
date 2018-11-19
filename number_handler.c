@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/18 17:13:32 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:29:30 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	float_string(t_elem *elem, intmax_t whole_num, double decimals)
 
 	result = ft_itoa(whole_num);
 	i = (elem->precision > 0 ? elem->precision + 1 : 0);
+	if (i == 0 && ft_strchr(elem->flags, '#'))
+		i = 1;
 	elem->data = ft_strnew(ft_strlen(result) + i);
 	ft_strcat(elem->data, result);
 	if (elem->precision > 0)
@@ -89,6 +91,8 @@ void	float_string(t_elem *elem, intmax_t whole_num, double decimals)
 		free(temp);
 		elem->precision = -1;
 	}
+	else if (i == 1)
+		ft_strcat(elem->data, ".");
 	free(result);
 }
 
@@ -142,7 +146,7 @@ void	number_handler(t_elem *elem)
 		transform_int(elem);
 	else if (elem->argtype != 'f')
 		transform_unsigned(elem);
-	if ((((char*)elem->data)[0] == '0')// || ((char*)elem->data)[0] == '\0')
+	if ((((char*)elem->data)[0] == '0')
 		&& ft_strchr(elem->flags, '#') && elem->argtype != 'p')
 		(ft_strchr(elem->flags, '#'))[0] = '/';
 	num_flags_handler(elem);

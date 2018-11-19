@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 18:33:46 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/18 16:00:19 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/18 18:29:48 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		letter_printer(t_elem *elem, int fd)
 	int count;
 
 	count = 0;
-	if (is_strchar(elem->argtype) == 0 )
+	if (is_strchar(elem->argtype) == 0)
 	{
 		count = ft_strlen((char*)elem->data);
 		ft_putstr_fd(elem->data, fd);
