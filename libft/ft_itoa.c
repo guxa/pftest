@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 18:17:34 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 17:51:29 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/18 17:58:53 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char	*unsigned_itoa(uintmax_t number, int base)
 	char		*numtable;
 	char		*string;
 
-	numtable = ft_strnew(16);
 	numtable = "0123456789abcdef";
 	size = un_countdigits(number, base);
 	string = ft_strnew((size > 0 ? size : 1));
