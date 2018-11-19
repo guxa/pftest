@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/11 23:34:25 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 17:50:08 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/18 17:13:32 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	transform_unsigned(t_elem *elem)
 
 	number = (uintmax_t)elem->data;
 	base = getbase(elem->argtype);
-	if (number == 0)
-		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
-	else if (elem->argtype == 'p')
+	if (elem->argtype == 'p')
 		elem->data = unsigned_itoa((unsigned long)elem->data, 16);
+	else if (number == 0)
+		elem->data = (elem->precision == 0 ? ft_strdup("") : ft_strdup("0"));
 	else if (elem->length[0] == '\0')
 		elem->data = unsigned_itoa((unsigned int)elem->data, base);
 	else if (elem->length[0] == 'h' && elem->length[1] == 'h')
@@ -142,11 +142,9 @@ void	number_handler(t_elem *elem)
 		transform_int(elem);
 	else if (elem->argtype != 'f')
 		transform_unsigned(elem);
-	if ((((char*)elem->data)[0] == '0' || ((char*)elem->data)[0] == '\0')
+	if ((((char*)elem->data)[0] == '0')// || ((char*)elem->data)[0] == '\0')
 		&& ft_strchr(elem->flags, '#') && elem->argtype != 'p')
 		(ft_strchr(elem->flags, '#'))[0] = '/';
-	if (elem->data == NULL)
-		exit_app("ova cisto za proverka");
 	num_flags_handler(elem);
 	if (elem->argtype == 'X')
 		while (((char*)elem->data)[++i])

@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 22:37:16 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 17:58:50 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/18 17:20:37 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int		add_hash(t_elem *elem)
 	base = getbase(elem->argtype);
 	if (base != 10 && (ft_strchr(elem->flags, '#') || elem->argtype == 'p'))
 		if ((base == 8 && ((char*)elem->data)[0] == '0') == 0)
+			if ((base == 16 && ((char*)elem->data)[0] == '\0') == 0)
 			hash = 1;
 	if (hash)
 	{
@@ -114,9 +115,10 @@ int		add_hash(t_elem *elem)
 		temp = ft_strnew(hash);
 		ft_strncpy(temp, "0x", hash);
 		result = ft_strjoin(temp, elem->data);
-		temp = elem->data;
-		elem->data = result;
 		ft_memdel((void **)&temp);
+		free(elem->data);
+		elem->data = result;
+		
 	}
 	return (hash);
 }

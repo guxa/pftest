@@ -6,7 +6,7 @@
 #    By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/14 16:52:43 by jguleski          #+#    #+#              #
-#    Updated: 2018/11/16 18:24:32 by jguleski         ###   ########.fr        #
+#    Updated: 2018/11/18 17:15:59 by jguleski         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,10 +36,18 @@ $(OBJECTS_DIR):
 	@echo "Directory objects was created"
 
 $(OBJECTS_DIR)%.o : %.c
-	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+	@gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIB):
 		@make -C $(LIBFT)
+
+$(NAME): $(OBJECTS_DIR) $(OBJECTS) $(LIB) $(LIBFT_OBJ)
+		@ar rc $(NAME) $(OBJECTS) $(LIBFT_OBJ)/*.o
+		@ranlib $(NAME)
+		@echo "your lib is ready"
+
+$(LIBFT_OBJ):
+		make -C $(LIBFT)
 
 debug: $(SRC) $(LIB)
 		gcc $(FLAGS) -g $(INCLUDES) $(SRC) main.c $(LIB) -o test-$(NAME)
@@ -56,11 +64,3 @@ fclean:	clean
 		@make -C $(LIBFT) fclean
 
 re: fclean all
-
-$(NAME): $(OBJECTS_DIR) $(OBJECTS) $(LIB) $(LIBFT_OBJ)
-		@ar rc $(NAME) $(OBJECTS) $(LIBFT_OBJ)/*.o
-		@ranlib $(NAME)
-		@echo "your lib is ready"
-
-$(LIBFT_OBJ):
-		make -C $(LIBFT)
