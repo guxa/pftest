@@ -6,7 +6,7 @@
 /*   By: jguleski <jguleski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 22:25:49 by jguleski          #+#    #+#             */
-/*   Updated: 2018/11/16 17:59:35 by jguleski         ###   ########.fr       */
+/*   Updated: 2018/11/22 18:24:31 by jguleski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_pelement
 }				t_elem;
 
 void			clear_list(t_elem *mainlist);
+int				ft_printf_fd(int fd, const char *format, ...);
 int				ft_printf(const char *format, ...);
 void			handle_floats(t_elem *elem, va_list ap);
 void			num_flags_handler(t_elem *elem);
